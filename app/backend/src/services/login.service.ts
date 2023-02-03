@@ -1,16 +1,31 @@
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
 import User from '../database/models/User.model';
-import generateToken from '../auth/jwt';
+import { generateToken, verifyToken } from '../auth/jwt';
 
-const login = async (email: string, password: string) => {
+const loginServ = async (email: string, password: string) => {
   const user = await User.findOne({ where: { email } });
-  if (!user) return { message: 'Invalid fields' };
 
-  const checkPassword = bcrypt.compareSync(password, user.password);
-  if (!checkPassword) return { message: 'Invalid fields' };
+  if (user && bcrypt.compareSync(password, user.password)) {
+    const token = generateToken({ email });
+    return { messageErro: null, result: token };
+  }
 
-  const token = generateToken(email);
-  return { result: token };
+  return { messageErro: 'Incorrect email or password' };
 };
 
-export default login;
+const userRoleServ = async (auth: string) => {
+  const response = verifyToken(auth) as jwt.JwtPayload;
+
+  if (!response.isError) {
+    const { email } = response;
+    const user = await User.findOne({ where: { email } });
+    return { messageErro: null, result: user?.role };
+  }
+  return { messageErro: 'Verificação de token falhou', result: response };
+};
+
+export {
+  loginServ,
+  userRoleServ,
+};

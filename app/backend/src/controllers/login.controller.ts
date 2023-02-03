@@ -1,12 +1,28 @@
 import { Request, Response } from 'express';
-import loginService from '../services/login.service';
+import { userRoleServ, loginServ } from '../services/login.service';
 
-const login = async (req:Request, res:Response) => {
+interface IResult {
+  messageErro?: string | null
+  result?: string | null,
+}
+
+const loginContr = async (req:Request, res:Response) => {
   const { email, password } = req.body;
-  const { message, result } = await loginService(email, password);
+  const { messageErro, result } = await loginServ(email, password) as IResult;
 
-  if (message) return res.status(400).json({ message });
-  return res.status(200).json({ token: result });
+  if (messageErro === null) return res.status(200).json({ token: result });
+  return res.status(401).json({ message: messageErro });
 };
 
-export default login;
+const userRoleContr = async (req:Request, res:Response) => {
+  const { authorization } = req.headers;
+  const { messageErro, result } = await userRoleServ(authorization as string);
+
+  if (messageErro === null) return res.status(200).json({ role: result });
+  return res.status(401).json({ message: messageErro, result });
+};
+
+export {
+  loginContr,
+  userRoleContr,
+};
