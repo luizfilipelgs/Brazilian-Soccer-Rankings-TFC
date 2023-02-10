@@ -52,9 +52,7 @@ describe('Testes de Login', () => {
   });
 
   it('06-Se não houver o Authorization retornará status não-autorizado', async () => {
-    sinon.stub(userModel, 'findOne').resolves({ dataValues: UserTestValid } as userModel);
-    sinon.stub(bcrypt, 'compareSync').resolves(false);
-
+  
     const result = await chai.request(app).get('/login/validate');
     expect(result.status).to.be.equal(401);
     expect(result.body.message).to.have.equal('Token not found');
@@ -62,19 +60,15 @@ describe('Testes de Login', () => {
   });
 
   it('07-verifica se é possível fazer o login com dados corretos.', async () => {
-    sinon.stub(userModel, 'findOne').resolves(UserTestValid  as userModel);
-    sinon.stub(jwt, 'sign').resolves(UserTestValid.password);
-    sinon.stub(bcrypt, 'compareSync').resolves(true);
-
+   
     const result = await chai.request(app).post('/login').send({ email: UserTestValid.email, password: "secret_admin" });
 
     expect(result.status).to.be.equal(200);
     expect(result.body).to.have.property('token');
   });
 
-  it('Rota validate retorna a role do usuário', async () => {
-    sinon.stub(userModel, 'findOne').resolves(UserTestValid  as userModel);
-
+  it('08-Rota validate retorna a role do usuário', async () => {
+    
     const result = await chai.request(app).get('/login/validate').set('Authorization', tokenTest);
     
     expect(result.status).to.be.equal(200);

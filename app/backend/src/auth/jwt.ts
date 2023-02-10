@@ -5,7 +5,7 @@ const JWT_SECRET = 'jwt_secret';
 
 const jwtConfig = {
   algorithm: 'HS256',
-  expiresIn: '5h',
+  expiresIn: '30D',
 } as object;
 
 const generateToken = (user: IUser) => {
