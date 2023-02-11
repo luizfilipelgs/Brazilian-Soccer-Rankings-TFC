@@ -3,10 +3,8 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 import { app } from '../app';
-import userModel from '../database/models/User.model';
 import { tokenTest, UserTestInvalid, UserTestValid } from './mocks/login.mock';
-import * as jwt from 'jsonwebtoken';
-import * as bcrypt from 'bcryptjs';
+
 
 
 chai.use(chaiHttp);

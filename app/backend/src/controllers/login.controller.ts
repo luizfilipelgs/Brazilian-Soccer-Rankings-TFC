@@ -1,25 +1,20 @@
 import { Request, Response } from 'express';
 import { userRoleServ, loginServ } from '../services/login.service';
 
-interface IResult {
-  messageErro?: string | null
-  result?: string | null,
-}
-
 const loginContr = async (req:Request, res:Response) => {
   const { email, password } = req.body;
-  const { messageErro, result } = await loginServ(email, password) as IResult;
+  const { messageErro, result } = await loginServ(email, password);
 
-  if (messageErro === null) return res.status(200).json({ token: result });
-  return res.status(401).json({ message: messageErro });
+  if (messageErro) return res.status(401).json({ message: messageErro });
+  return res.status(200).json({ token: result });
 };
 
 const userRoleContr = async (req:Request, res:Response) => {
   const { authorization } = req.headers;
   const { messageErro, result } = await userRoleServ(authorization as string);
 
-  if (messageErro === null) return res.status(200).json({ role: result });
-  return res.status(401).json({ message: messageErro, result });
+  if (messageErro) return res.status(401).json({ message: messageErro, result });
+  return res.status(200).json({ role: result });
 };
 
 export {

@@ -1,5 +1,5 @@
 
-const tokenTest = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImlhdCI6MTY3NjA1NzI0MiwiZXhwIjoxNjc2MDc1MjQyfQ.5iIn1dPd24AMviyp0hRX3FWvN_O4ANNfDZwIF3uw00w"
+const tokenTest = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImlhdCI6MTY3NjA3OTMzMywiZXhwIjoxNjc2Njg0MTMzfQ.EWTuIPxIIOwkrPzdDnBqbnbVVpEVPiTReGD46hKlCYw"
 
 const UserTestInvalid = {
   username: 'invalid',
