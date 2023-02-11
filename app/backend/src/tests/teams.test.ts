@@ -24,12 +24,14 @@ describe('Testes de Login', () => {
     expect(result.body).to.be.an('array');
   });
 
-  it('02-verifica se a rota /teams:id retorna o time correto', async () => {
-    const result = await chai.request(app).get('/teams:id');
+  it('02-verifica se a rota /teams/:id retorna o time correto', async () => {
+    const result = await chai.request(app).get('/teams/7');
 
     expect(result.status).to.be.equal(200);
     expect(result.body).to.have.property('id');
     expect(result.body).to.have.property('teamName');
+    expect(result.body.id).to.be.deep.equal(7);
+    expect(result.body.teamName).to.be.deep.equal('Flamengo');
     
   });
 });
