@@ -34,4 +34,14 @@ describe('Testes de Login', () => {
     expect(result.body.teamName).to.be.deep.equal('Flamengo');
     
   });
+  it('03-verifica se ao usar a rota /teams/:id com um id invalido se retorna um erro', async () => {
+    const result = await chai.request(app).get('/teams/20');
+
+    expect(result.status).to.be.equal(401);
+    expect(result.body).to.have.property('message');
+    expect(result.body).to.have.property('result');
+    expect(result.body.message).to.be.deep.equal("Não há time cadastrado com esse ID");
+    expect(result.body.result).to.be.deep.equal(null);
+    
+  });
 });
