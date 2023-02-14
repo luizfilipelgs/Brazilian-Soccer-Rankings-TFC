@@ -14,7 +14,7 @@ const getMatchesServ = async () => {
   return { messageErro: 'Erro na busca dos metches', result: matches };
 };
 
-const getMatchesProgServ = async (status: boolean) => {
+const getMatchesProgServ = async (status: string | boolean) => {
   const matches = await Matches.findAll({
     where: { inProgress: status },
     include: [

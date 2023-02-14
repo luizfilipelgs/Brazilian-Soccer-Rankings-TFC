@@ -3,16 +3,12 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 import { app } from '../app';
-import teamsModel from '../database/models/Team.model';
-import { tokenTest, UserTestInvalid, UserTestValid } from './mocks/login.mock';
-
-
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Testes de Login', () => {
+describe('Testes de Teams', () => {
   afterEach(sinon.restore);
 
   
