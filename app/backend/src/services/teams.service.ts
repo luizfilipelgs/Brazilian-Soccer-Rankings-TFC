@@ -1,11 +1,11 @@
 import Teams from '../database/models/Team.model';
 
-const getTeamsServ = async () => {
+const getTeams = async () => {
   const teams = await Teams.findAll();
   return teams;
 };
 
-const getTeamIDServ = async (id:number | string) => {
+const getTeamId = async (id:number | string) => {
   const team = await Teams.findByPk(id);
 
   if (team) {
@@ -14,7 +14,7 @@ const getTeamIDServ = async (id:number | string) => {
   return { messageErro: 'Não há time cadastrado com esse ID', result: team };
 };
 
-export {
-  getTeamsServ,
-  getTeamIDServ,
+export default {
+  getTeams,
+  getTeamId,
 };
