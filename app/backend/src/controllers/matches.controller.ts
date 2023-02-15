@@ -1,33 +1,49 @@
 import { Request, Response } from 'express';
-import { getMatchesProgServ, getMatchesServ,
-  postMatcheProgServ } from '../services/matches.service';
+import matchesServ from '../services/matches.service';
 
-const getMatchesContr = async (req:Request, res:Response) => {
+const getMatches = async (req:Request, res:Response) => {
   const { inProgress } = req.query;
   const status = inProgress === 'true';
 
   if (inProgress) {
-    const result = await getMatchesProgServ(status);
+    const result = await matchesServ.getMatchesProg(status);
 
     return res.status(200).json(result);
   }
 
-  const result = await getMatchesServ();
+  const result = await matchesServ.getMatches();
   return res.status(200).json(result);
 };
 
-const postMatcheContr = async (req:Request, res:Response) => {
+const postMatcheProg = async (req:Request, res:Response) => {
   const { body } = req;
   const { authorization } = req.headers;
   const { messageErro,
-    result, statusCode } = await postMatcheProgServ(body, authorization as string);
+    result, statusCode } = await matchesServ.postMatcheProg(body, authorization as string);
 
   if (messageErro) res.status(statusCode).json({ message: messageErro });
 
   return res.status(statusCode).json(result);
 };
 
-export {
-  getMatchesContr,
-  postMatcheContr,
+const patchMatchFinish = async (req:Request, res:Response) => {
+  const { id } = req.params;
+  const { statusCode, result } = await matchesServ.patchMatchFinish(id);
+
+  return res.status(statusCode).json({ message: result });
+};
+
+const patchMatch = async (req:Request, res:Response) => {
+  const { id } = req.params;
+  const { homeTeamGoals, awayTeamGoals } = req.body;
+  const { statusCode, result } = await matchesServ.patchMatch(id, homeTeamGoals, awayTeamGoals);
+
+  return res.status(statusCode).json({ message: result });
+};
+
+export default {
+  getMatches,
+  postMatcheProg,
+  patchMatchFinish,
+  patchMatch,
 };

@@ -3,7 +3,7 @@ import Matches from '../database/models/Match.model';
 import { verifyToken } from '../auth/jwt';
 import { IMatch } from '../interfaces/IMatches';
 
-const getMatchesServ = async () => {
+const getMatches = async () => {
   const matches = await Matches.findAll({
     include: [
       { model: Team, as: 'homeTeam', attributes: ['teamName'] },
@@ -13,7 +13,7 @@ const getMatchesServ = async () => {
   return matches;
 };
 
-const getMatchesProgServ = async (status: string | boolean) => {
+const getMatchesProg = async (status: string | boolean) => {
   const matches = await Matches.findAll({
     where: { inProgress: status },
     include: [
@@ -24,7 +24,7 @@ const getMatchesProgServ = async (status: string | boolean) => {
   return matches;
 };
 
-const postMatcheProgServ = async (match: IMatch, auth: string) => {
+const postMatcheProg = async (match: IMatch, auth: string) => {
   const statusToken = verifyToken(auth);
 
   if (statusToken.isError) {
@@ -50,8 +50,21 @@ const postMatcheProgServ = async (match: IMatch, auth: string) => {
   return { result: createdMatch, statusCode: 201 };
 };
 
-export {
-  getMatchesServ,
-  getMatchesProgServ,
-  postMatcheProgServ,
+const patchMatchFinish = async (id: string) => {
+  await Matches.update({ inProgress: false }, { where: { id } });
+  return { result: 'Finished', statusCode: 200 };
+};
+
+const patchMatch = async (id: string, homeGols: number, awayGols: number) => {
+  await Matches.update({ homeTeamGoals: homeGols, awayTeamGoals: awayGols }, { where: { id } });
+  const placar = `Placar: ${homeGols} x ${awayGols}`;
+  return { result: placar, statusCode: 200 };
+};
+
+export default {
+  getMatches,
+  getMatchesProg,
+  postMatcheProg,
+  patchMatchFinish,
+  patchMatch,
 };
