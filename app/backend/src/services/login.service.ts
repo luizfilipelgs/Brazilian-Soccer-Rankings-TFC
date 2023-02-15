@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import User from '../database/models/User.model';
 import { generateToken, verifyToken } from '../auth/jwt';
 
-const loginServ = async (email: string, password: string) => {
+const postLogin = async (email: string, password: string) => {
   const user = await User.findOne({ where: { email } });
 
   if (user && bcrypt.compareSync(password, user.password)) {
@@ -14,7 +14,7 @@ const loginServ = async (email: string, password: string) => {
   return { messageErro: 'Incorrect email or password' };
 };
 
-const userRoleServ = async (auth: string) => {
+const getRoleUser = async (auth: string) => {
   const response = verifyToken(auth) as jwt.JwtPayload;
 
   if (!response.isError) {
@@ -25,7 +25,7 @@ const userRoleServ = async (auth: string) => {
   return { messageErro: 'Verificação de token falhou', result: response };
 };
 
-export {
-  loginServ,
-  userRoleServ,
+export default {
+  postLogin,
+  getRoleUser,
 };
