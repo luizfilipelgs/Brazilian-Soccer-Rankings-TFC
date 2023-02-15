@@ -3,6 +3,7 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 import { app } from '../app';
+import Matches from '../database/models/Match.model';
 
 chai.use(chaiHttp);
 
@@ -31,5 +32,5 @@ describe('Testes de Matches', () => {
     expect(resultTrue.body).to.have.length(8);
     expect(resultFalse.body).to.have.length(40);
     
-  });
+  });  
 });

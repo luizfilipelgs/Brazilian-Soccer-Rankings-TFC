@@ -2,9 +2,7 @@ import { Request, Response } from 'express';
 import { getTeamIDServ, getTeamsServ } from '../services/teams.service';
 
 const getTeamsContr = async (_req:Request, res:Response) => {
-  const { messageErro, result } = await getTeamsServ();
-
-  if (messageErro) return res.status(401).json({ message: messageErro, result });
+  const result = await getTeamsServ();
   return res.status(200).json(result);
 };
 

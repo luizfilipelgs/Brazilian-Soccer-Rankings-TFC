@@ -2,11 +2,7 @@ import Teams from '../database/models/Team.model';
 
 const getTeamsServ = async () => {
   const teams = await Teams.findAll();
-
-  if (teams.length !== 0) {
-    return { messageErro: null, result: teams };
-  }
-  return { messageErro: 'Erro na busca da lista de times', result: teams };
+  return teams;
 };
 
 const getTeamIDServ = async (id:number | string) => {

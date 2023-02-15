@@ -1,5 +1,7 @@
 import Team from '../database/models/Team.model';
 import Matches from '../database/models/Match.model';
+import { verifyToken } from '../auth/jwt';
+import { IMatch } from '../interfaces/IMatches';
 
 const getMatchesServ = async () => {
   const matches = await Matches.findAll({
@@ -8,10 +10,7 @@ const getMatchesServ = async () => {
       { model: Team, as: 'awayTeam', attributes: ['teamName'] }],
   });
 
-  if (matches.length !== 0) {
-    return { messageErro: null, result: matches };
-  }
-  return { messageErro: 'Erro na busca dos metches', result: matches };
+  return matches;
 };
 
 const getMatchesProgServ = async (status: string | boolean) => {
@@ -22,13 +21,37 @@ const getMatchesProgServ = async (status: string | boolean) => {
       { model: Team, as: 'awayTeam', attributes: ['teamName'] }],
   });
 
-  if (matches.length !== 0) {
-    return { messageErro: null, result: matches };
+  return matches;
+};
+
+const postMatcheProgServ = async (match: IMatch, auth: string) => {
+  const statusToken = verifyToken(auth);
+
+  if (statusToken.isError) {
+    return { messageErro: 'Token must be a valid token', statusCode: 401 };
   }
-  return { messageErro: 'Erro na busca dos metches', result: matches };
+  const HomeTeam = await Team.findByPk(match.homeTeamId);
+  const AwayTeam = await Team.findByPk(match.awayTeamId);
+
+  if (!HomeTeam || !AwayTeam) {
+    return { messageErro: 'There is no team with such id!', statusCode: 404 };
+  }
+
+  if (match.homeTeamId === match.awayTeamId) {
+    return { messageErro: 'It is not possible to create a match with two equal teams',
+      statusCode: 422 };
+  }
+
+  const createdMatch = await Matches.create({
+    ...match,
+    inProgress: true,
+  });
+
+  return { result: createdMatch, statusCode: 201 };
 };
 
 export {
   getMatchesServ,
   getMatchesProgServ,
+  postMatcheProgServ,
 };
