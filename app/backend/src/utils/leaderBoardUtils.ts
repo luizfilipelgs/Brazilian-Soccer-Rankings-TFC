@@ -14,30 +14,46 @@ const leaderboardObj = () => ({
   efficiency: '',
 });
 
-const CalcTotalPoints = (homeGoals: number, awayGoals: number) => {
-  if (homeGoals > awayGoals) return 3;
-  if (homeGoals === awayGoals) return 1;
+const CalcTotalPoints = (goalsTeamA: number, goalsTeamB: number) => {
+  if (goalsTeamA > goalsTeamB) return 3;
+  if (goalsTeamA === goalsTeamB) return 1;
   return 0;
 };
 
-const statusWDL = (homeGoals: number, awayGoals: number, operator: string) => {
-  const result = (operator === 'maior' && homeGoals > awayGoals)
-  || (operator === 'menor' && homeGoals < awayGoals)
-  || (operator === 'igual' && homeGoals === awayGoals) ? 1 : 0;
+const statusWDL = (goalsTeamA: number, goalsTeamB: number, operator: string) => {
+  const result = (operator === 'maior' && goalsTeamA > goalsTeamB)
+  || (operator === 'menor' && goalsTeamA < goalsTeamB)
+  || (operator === 'igual' && goalsTeamA === goalsTeamB) ? 1 : 0;
   return result;
 };
 
-const generateLeaderBoard = async (LdForm: ILeaderboard, team: any, match: IMatch) => {
+const generateLeaderBoardHome = async (LdForm: ILeaderboard, team: any, match: IMatch) => {
   const ld = LdForm;
   if (team.id === match.homeTeamId) {
     ld.name = team.teamName;
-    ld.totalPoints += CalcTotalPoints(match.homeTeamGoals, match.awayTeamGoals);
     ld.totalGames += 1;
+    ld.totalPoints += CalcTotalPoints(match.homeTeamGoals, match.awayTeamGoals);
     ld.totalVictories += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'maior');
     ld.totalDraws += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'igual');
     ld.totalLosses += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'menor');
     ld.goalsFavor += match.homeTeamGoals;
     ld.goalsOwn += match.awayTeamGoals;
+    ld.goalsBalance = (ld.goalsFavor - ld.goalsOwn);
+    ld.efficiency = (((ld.totalPoints) / (ld.totalGames * 3)) * 100).toFixed(2);
+  }
+};
+
+const generateLeaderBoardAway = async (LdForm: ILeaderboard, team: any, match: IMatch) => {
+  const ld = LdForm;
+  if (team.id === match.awayTeamId) {
+    ld.name = team.teamName;
+    ld.totalPoints += CalcTotalPoints(match.awayTeamGoals, match.homeTeamGoals);
+    ld.totalGames += 1;
+    ld.totalVictories += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'maior');
+    ld.totalDraws += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'igual');
+    ld.totalLosses += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'menor');
+    ld.goalsFavor += match.awayTeamGoals;
+    ld.goalsOwn += match.homeTeamGoals;
     ld.goalsBalance = (ld.goalsFavor - ld.goalsOwn);
     ld.efficiency = (((ld.totalPoints) / (ld.totalGames * 3)) * 100).toFixed(2);
   }
@@ -60,6 +76,7 @@ const orderLeaderBoard = async (ld: ILeaderboard[]) => {
 
 export {
   leaderboardObj,
-  generateLeaderBoard,
+  generateLeaderBoardHome,
   orderLeaderBoard,
+  generateLeaderBoardAway,
 };
