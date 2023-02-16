@@ -13,7 +13,14 @@ const getLeaderBoardAway = async (_req:Request, res:Response) => {
   return res.status(200).json(leaderBoard);
 };
 
+/* const getLeaderBoard = async (_req:Request, res:Response) => {
+  const leaderBoard = await leaderBoardServ.getLeaderBoard('/');
+
+  return res.status(200).json(leaderBoard);
+}; */
+
 export default {
   getLeaderBoardHome,
   getLeaderBoardAway,
+  /* getLeaderBoard, */
 };

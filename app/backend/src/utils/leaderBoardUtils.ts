@@ -28,36 +28,57 @@ const statusWDL = (goalsTeamA: number, goalsTeamB: number, operator: string) => 
 };
 
 const generateLeaderBoardHome = async (LdForm: ILeaderboard, team: any, match: IMatch) => {
-  const ld = LdForm;
+  const ldHome = LdForm;
   if (team.id === match.homeTeamId) {
-    ld.name = team.teamName;
-    ld.totalGames += 1;
-    ld.totalPoints += CalcTotalPoints(match.homeTeamGoals, match.awayTeamGoals);
-    ld.totalVictories += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'maior');
-    ld.totalDraws += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'igual');
-    ld.totalLosses += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'menor');
-    ld.goalsFavor += match.homeTeamGoals;
-    ld.goalsOwn += match.awayTeamGoals;
-    ld.goalsBalance = (ld.goalsFavor - ld.goalsOwn);
-    ld.efficiency = (((ld.totalPoints) / (ld.totalGames * 3)) * 100).toFixed(2);
+    ldHome.name = team.teamName;
+    ldHome.totalGames += 1;
+    ldHome.totalPoints += CalcTotalPoints(match.homeTeamGoals, match.awayTeamGoals);
+    ldHome.totalVictories += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'maior');
+    ldHome.totalDraws += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'igual');
+    ldHome.totalLosses += statusWDL(match.homeTeamGoals, match.awayTeamGoals, 'menor');
+    ldHome.goalsFavor += match.homeTeamGoals;
+    ldHome.goalsOwn += match.awayTeamGoals;
+    ldHome.goalsBalance = (ldHome.goalsFavor - ldHome.goalsOwn);
+    ldHome.efficiency = (((ldHome.totalPoints) / (ldHome.totalGames * 3)) * 100).toFixed(2);
   }
+  return ldHome;
 };
 
 const generateLeaderBoardAway = async (LdForm: ILeaderboard, team: any, match: IMatch) => {
-  const ld = LdForm;
+  const ldAway = LdForm;
   if (team.id === match.awayTeamId) {
-    ld.name = team.teamName;
-    ld.totalPoints += CalcTotalPoints(match.awayTeamGoals, match.homeTeamGoals);
-    ld.totalGames += 1;
-    ld.totalVictories += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'maior');
-    ld.totalDraws += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'igual');
-    ld.totalLosses += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'menor');
-    ld.goalsFavor += match.awayTeamGoals;
-    ld.goalsOwn += match.homeTeamGoals;
-    ld.goalsBalance = (ld.goalsFavor - ld.goalsOwn);
-    ld.efficiency = (((ld.totalPoints) / (ld.totalGames * 3)) * 100).toFixed(2);
+    ldAway.name = team.teamName;
+    ldAway.totalPoints += CalcTotalPoints(match.awayTeamGoals, match.homeTeamGoals);
+    ldAway.totalGames += 1;
+    ldAway.totalVictories += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'maior');
+    ldAway.totalDraws += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'igual');
+    ldAway.totalLosses += statusWDL(match.awayTeamGoals, match.homeTeamGoals, 'menor');
+    ldAway.goalsFavor += match.awayTeamGoals;
+    ldAway.goalsOwn += match.homeTeamGoals;
+    ldAway.goalsBalance = (ldAway.goalsFavor - ldAway.goalsOwn);
+    ldAway.efficiency = (((ldAway.totalPoints) / (ldAway.totalGames * 3)) * 100).toFixed(2);
   }
+  return ldAway;
 };
+
+/* const generateLeaderBoardGeral = async (LdForm: ILeaderboard, team: any, match: IMatch) => {
+  const ld = LdForm;
+  const ldAway = await generateLeaderBoardAway(LdForm, team, match);
+  const ldHome = await generateLeaderBoardHome(LdForm, team, match);
+
+  ld.name = team.teamName;
+  ld.totalPoints += ldHome.totalPoints + ldAway.totalPoints;
+  ld.totalGames += ldHome.totalGames + ldAway.totalGames;
+  ld.totalVictories += ldHome.totalVictories + ldAway.totalVictories;
+  ld.totalDraws += ldHome.totalDraws + ldAway.totalDraws;
+  ld.totalLosses += ldHome.totalLosses + ldAway.totalLosses;
+  ld.goalsFavor += ldHome.goalsFavor + ldAway.goalsFavor;
+  ld.goalsOwn += ldHome.goalsOwn + ldAway.goalsOwn;
+  ld.goalsBalance = (ld.goalsFavor - ld.goalsOwn);
+  ld.efficiency = (((ld.totalPoints) / (ld.totalGames * 3)) * 100).toFixed(2);
+
+  return ld;
+}; */
 
 const orderLeaderBoard = async (ld: ILeaderboard[]) => {
   const ldOrdened = ld.sort((home: ILeaderboard, away: ILeaderboard) => {
@@ -79,4 +100,5 @@ export {
   generateLeaderBoardHome,
   orderLeaderBoard,
   generateLeaderBoardAway,
+  /* generateLeaderBoardGeral, */
 };

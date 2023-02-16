@@ -4,7 +4,7 @@ import matchesServ from './matches.service';
 import teamsService from './teams.service';
 import ILeaderboard from '../interfaces/ILeaderboard';
 
-const getLeaderBoard = async (homeOrAway: string) => {
+const getLeaderBoard = async (endPoint: string) => {
   const matchesProg = await matchesServ.getMatchesProg(false);
   const teams = await teamsService.getTeams();
   const LeaderBoard = [] as ILeaderboard[];
@@ -12,8 +12,9 @@ const getLeaderBoard = async (homeOrAway: string) => {
   teams.forEach((team) => {
     const LdForm = leaderboardObj();
     matchesProg.forEach((match) => {
-      if (homeOrAway === 'home') generateLeaderBoardHome(LdForm, team, match);
-      if (homeOrAway === 'away') generateLeaderBoardAway(LdForm, team, match);
+      if (endPoint === 'home') generateLeaderBoardHome(LdForm, team, match);
+      if (endPoint === 'away') generateLeaderBoardAway(LdForm, team, match);
+      // if (endPoint === '/') generateLeaderBoardGeral(LdForm, team, match);
     });
     LeaderBoard.push(LdForm);
   });
