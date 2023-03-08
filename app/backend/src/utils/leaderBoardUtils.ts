@@ -61,24 +61,26 @@ const generateLeaderBoardAway = async (LdForm: ILeaderboard, team: any, match: I
   return ldAway;
 };
 
-/* const generateLeaderBoardGeral = async (LdForm: ILeaderboard, team: any, match: IMatch) => {
+const generateLeaderBoardGeral = async (
+  LdForm: ILeaderboard,
+  away: ILeaderboard,
+  home: ILeaderboard,
+) => {
   const ld = LdForm;
-  const ldAway = await generateLeaderBoardAway(LdForm, team, match);
-  const ldHome = await generateLeaderBoardHome(LdForm, team, match);
 
-  ld.name = team.teamName;
-  ld.totalPoints += ldHome.totalPoints + ldAway.totalPoints;
-  ld.totalGames += ldHome.totalGames + ldAway.totalGames;
-  ld.totalVictories += ldHome.totalVictories + ldAway.totalVictories;
-  ld.totalDraws += ldHome.totalDraws + ldAway.totalDraws;
-  ld.totalLosses += ldHome.totalLosses + ldAway.totalLosses;
-  ld.goalsFavor += ldHome.goalsFavor + ldAway.goalsFavor;
-  ld.goalsOwn += ldHome.goalsOwn + ldAway.goalsOwn;
+  ld.name = home.name;
+  ld.totalPoints = home.totalPoints + away.totalPoints;
+  ld.totalGames = home.totalGames + away.totalGames;
+  ld.totalVictories = home.totalVictories + away.totalVictories;
+  ld.totalDraws = home.totalDraws + away.totalDraws;
+  ld.totalLosses = home.totalLosses + away.totalLosses;
+  ld.goalsFavor = home.goalsFavor + away.goalsFavor;
+  ld.goalsOwn = home.goalsOwn + away.goalsOwn;
   ld.goalsBalance = (ld.goalsFavor - ld.goalsOwn);
   ld.efficiency = (((ld.totalPoints) / (ld.totalGames * 3)) * 100).toFixed(2);
 
   return ld;
-}; */
+};
 
 const orderLeaderBoard = async (ld: ILeaderboard[]) => {
   const ldOrdened = ld.sort((home: ILeaderboard, away: ILeaderboard) => {
@@ -100,5 +102,5 @@ export {
   generateLeaderBoardHome,
   orderLeaderBoard,
   generateLeaderBoardAway,
-  /* generateLeaderBoardGeral, */
+  generateLeaderBoardGeral,
 };
