@@ -4,7 +4,7 @@
 
   O TFC é um site informativo sobre partidas e classificações de futebol! soccer
 
-  Nesse projeto, foi construido um back-end dockerizado é consumida por um front-end já desenvolvido. A API foi desenvolvida utilizando os princípios de POO, SOLID e TDD, e feita a modelagem de dados através do Sequelize. 
+  Nesse projeto, foi construido um back-end dockerizado que é consumido por um front-end já desenvolvido. A API utiliza os princípios de POO, SOLID e TDD, e feita a modelagem de dados através do Sequelize. 
 
    ![Exemplo app front](/front-example.png)  
  
