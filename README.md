@@ -50,10 +50,10 @@ Na sua máquina você deve ter:
 <summary><strong> 🔰 Iniciando o projeto</strong></summary><br />
 
   1. Clone o repositório
-  * `git clone https://github.com/luizfilipelgs/TFC`
+  * `git@github.com:luizfilipelgs/Brazilian-Soccer-Rankings-TFC.git`
 
   2. Entre na pasta do repositório que você acabou de clonar:
-  * `cd TFC`
+  * `cd Brazilian-Soccer-Rankings-TFC`
 
   3. Instale as dependências (Isso ja ira instalar tanto o front quanto o backend).
   * `npm install`
